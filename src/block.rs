@@ -27,7 +27,6 @@ impl From<[u8; 57344]> for Block {
             assert!(section.id < 14, "Block: Section id must be within 0-13!");
             sections[section.id as usize] = section;
 
-            println!("Section {}", section.id);
             print_bytes(&section.data[0..16]);
 
             if section.id == 0 {
@@ -50,7 +49,7 @@ impl Block {
     ) -> std::io::Result<()> {
         assert!(
             section_index < 14,
-            "Blcok: Section index must be lesser than 14"
+            "Block: Section index must be lesser than 14"
         );
 
         let real_index = (self.zero_index + section_index) % 14;
@@ -61,7 +60,7 @@ impl Block {
         file.write(&section.data)?;
         file.seek(std::io::SeekFrom::Start((start + 0x0FF4) as u64))?;
         file.write(&section.id.to_le_bytes())?;
-        file.write(&section.checksum.to_le_bytes())?;
+        file.write(&section.compute_checksum().to_le_bytes())?;
         file.write(&section.signature.to_le_bytes())?;
         file.write(&section.save_index.to_le_bytes())?;
         Ok(())

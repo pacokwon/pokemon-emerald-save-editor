@@ -15,8 +15,8 @@ impl From<&[u8]> for PokemonList {
                 break;
             }
 
-            let start = (4 + i * 100) as usize;
-            let end = (4 + (i + 1) * 100) as usize;
+            let start = 4 + i * 100;
+            let end = 4 + (i + 1) * 100;
 
             pokemon_list.push(Pokemon::from(&value[start..end]));
         }
@@ -30,5 +30,27 @@ impl From<&Section> for PokemonList {
         assert!(value.id == 1, "Section id must be 1");
 
         PokemonList::from(&value.data[0x234..(0x234 + 604)])
+    }
+}
+
+impl From<&PokemonList> for [u8; 604] {
+    fn from(value: &PokemonList) -> Self {
+        let mut buf = [0u8; 604];
+        let length = value.0.len();
+
+        buf[0..4].copy_from_slice(&(length as u32).to_le_bytes());
+
+        for (i, pokemon) in value.0.iter().enumerate() {
+            if i >= length {
+                break;
+            }
+
+            let start = 4 + i * 100;
+            let end = 4 + (i + 1) * 100;
+
+            buf[start..end].copy_from_slice(&<[u8; 100]>::from(pokemon));
+        }
+
+        buf
     }
 }

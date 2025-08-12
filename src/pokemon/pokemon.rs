@@ -105,3 +105,32 @@ impl From<&[u8]> for Pokemon {
         }
     }
 }
+
+impl From<&Pokemon> for [u8; 100] {
+    fn from(value: &Pokemon) -> Self {
+        let mut buf = [0u8; 100];
+        let (pokemon_data, checksum): ([u8; 48], u16) = From::from(&value.data);
+
+        buf[0..4].copy_from_slice(&value.personality_value.to_le_bytes());
+        buf[4..8].copy_from_slice(&value.ot_id.to_le_bytes());
+        buf[8..18].copy_from_slice(&value.nickname);
+        buf[0x12..0x14].copy_from_slice(&[value.language, value.misc_flags]);
+        buf[0x14..0x1B].copy_from_slice(&value.ot_name);
+        buf[0x1B] = value.markings;
+        buf[0x1C..0x1E].copy_from_slice(&checksum.to_le_bytes());
+        buf[0x1E..0x20].copy_from_slice(&value.unknown.to_le_bytes());
+
+        buf[0x20..0x50].copy_from_slice(&pokemon_data);
+        buf[0x50..0x54].copy_from_slice(&value.status_condition.to_le_bytes());
+        buf[0x54..0x56].copy_from_slice(&[value.level, value.mail_id]);
+        buf[0x56..0x58].copy_from_slice(&value.current_hp.to_le_bytes());
+        buf[0x58..0x5A].copy_from_slice(&value.total_hp.to_le_bytes());
+        buf[0x5A..0x5C].copy_from_slice(&value.attack.to_le_bytes());
+        buf[0x5C..0x5E].copy_from_slice(&value.defense.to_le_bytes());
+        buf[0x5E..0x60].copy_from_slice(&value.speed.to_le_bytes());
+        buf[0x60..0x62].copy_from_slice(&value.sp_attack.to_le_bytes());
+        buf[0x62..0x64].copy_from_slice(&value.sp_defense.to_le_bytes());
+
+        buf
+    }
+}

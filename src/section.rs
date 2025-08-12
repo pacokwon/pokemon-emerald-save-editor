@@ -1,3 +1,5 @@
+use crate::pokemon::PokemonList;
+
 // Represents a single section
 // The save file is split into two *blocks*,
 // which are each consisted of 14 sections.
@@ -73,7 +75,6 @@ impl Section {
             .chunks_exact(4)
             .map(|chunk| {
                 let x = u32::from_le_bytes(chunk.try_into().unwrap());
-                // println!("0x{:04X}", x);
                 x
             })
             .reduce(|acc, e| acc.wrapping_add(e))
@@ -86,5 +87,14 @@ impl Section {
         let lower = (checksum & 0xFFFF) as u16;
 
         upper.wrapping_add(lower)
+    }
+
+    pub fn write_pokemon_list(&mut self, pokemon_list: &PokemonList) {
+        assert!(
+            self.id == 1,
+            "Section: Section ID must be 1 when writing a pokemon list"
+        );
+
+        self.data[0x234..(0x234 + 604)].copy_from_slice(&<[u8; 604]>::from(pokemon_list));
     }
 }

@@ -6,9 +6,9 @@ Goals for this project:
 - [x] Block
 - [x] Section
 - [x] Write Block
-- [ ] Write Section
-- [ ] Pokemon data encryption and decryption
-- [ ] Write Pokemon data
+- [x] Write Section
+- [x] Pokemon data encryption and decryption
+- [x] Write Pokemon data
 
 * Add a pokemon
 - Add a Lvl 99 Rayquaza to the party

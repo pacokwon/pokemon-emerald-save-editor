@@ -18,8 +18,8 @@ fn main() -> std::io::Result<()> {
     let mut block = Block::from(buffer);
 
     let pokemon_list = PokemonList::from(&block.sections[1]);
-    println!("{:?} {}", pokemon_list, pokemon_list.0.len());
 
+    block.sections[1].write_pokemon_list(&pokemon_list);
     block.write_section_to_file(1, &mut file)?;
 
     Ok(())
