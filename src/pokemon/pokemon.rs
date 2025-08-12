@@ -1,3 +1,5 @@
+use crate::pokemon::PokemonData;
+
 // Personality value 	u32 	0x00 	4 	0
 // OT ID 	u32 	0x04 	4 	4
 // Nickname 	u8[10] 	0x08 	10 	8
@@ -29,7 +31,7 @@ pub struct Pokemon {
     pub markings: u8,
     pub checksum: u16,
     pub unknown: u16,
-    pub data: [u8; 48],
+    pub data: PokemonData,
     pub status_condition: u32,
     pub level: u8,
     pub mail_id: u8,
@@ -66,7 +68,7 @@ impl From<&[u8]> for Pokemon {
         let data = {
             let mut buf = [0u8; 48];
             buf.copy_from_slice(&value[0x20..0x50]);
-            buf
+            PokemonData::new(&mut buf, personality_value, ot_id)
         };
         let status_condition = u32::from_le_bytes(value[0x50..0x54].try_into().unwrap());
         let level = value[0x54];
