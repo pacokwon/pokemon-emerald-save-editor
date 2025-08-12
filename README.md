@@ -3,6 +3,12 @@
 Goals for this project:
 
 * Understand the Pokemon Emerald save data structure
+- [x] Block
+- [x] Section
+- [x] Write Block
+- [ ] Write Section
+- [ ] Pokemon data encryption and decryption
+- [ ] Write Pokemon data
 
 * Add a pokemon
 - Add a Lvl 99 Rayquaza to the party
