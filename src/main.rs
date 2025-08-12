@@ -1,6 +1,6 @@
 use std::{fs::OpenOptions, io::Read};
 
-use emerald_save_editor::block::Block;
+use emerald_save_editor::{block::Block, pokemon::PokemonList};
 
 fn main() -> std::io::Result<()> {
     std::fs::copy(
@@ -16,6 +16,9 @@ fn main() -> std::io::Result<()> {
     file.read_exact(&mut buffer)?;
 
     let block = Block::from(buffer);
+
+    let pokemon_list = PokemonList::from(&block.sections[1]);
+    println!("{:?} {}", pokemon_list, pokemon_list.0.len());
 
     Ok(())
 }
