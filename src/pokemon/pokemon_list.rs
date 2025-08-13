@@ -1,7 +1,33 @@
+use std::ops::{Index, IndexMut};
+
 use crate::{pokemon::Pokemon, section::Section};
 
 #[derive(Debug)]
-pub struct PokemonList(pub Vec<Pokemon>);
+pub struct PokemonList(Vec<Pokemon>);
+
+impl PokemonList {
+    pub fn add(&mut self, pokemon: Pokemon) {
+        if self.0.len() == 6 {
+            return;
+        }
+
+        self.0.push(pokemon);
+    }
+}
+
+impl Index<usize> for PokemonList {
+    type Output = Pokemon;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.0[index]
+    }
+}
+
+impl IndexMut<usize> for PokemonList {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.0[index]
+    }
+}
 
 impl From<&[u8]> for PokemonList {
     fn from(value: &[u8]) -> Self {

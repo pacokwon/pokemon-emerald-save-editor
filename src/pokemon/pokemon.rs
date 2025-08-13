@@ -20,7 +20,7 @@ use crate::pokemon::PokemonData;
 // Speed 	u16 	0x5E 	2 	94
 // Sp. Attack 	u16 	0x60 	2 	96
 // Sp. Defense 	u16 	0x62 	2 	98
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Pokemon {
     pub personality_value: u32,
     pub ot_id: u32,
@@ -42,6 +42,38 @@ pub struct Pokemon {
     pub speed: u16,
     pub sp_attack: u16,
     pub sp_defense: u16,
+}
+
+impl Pokemon {
+    pub fn max_out(&mut self) {
+        self.level = 100;
+        self.status_condition = 0;
+        self.total_hp = 714;
+        self.current_hp = 714;
+        self.attack = 180;
+        self.defense = 230;
+        self.speed = 180;
+        self.sp_attack = 230;
+        self.sp_defense = 180;
+
+        self.data.growth.pp_bonus = 0xFF;
+        self.data.growth.friendship = 0xFF;
+        self.data.evs_condition.hp_ev = 0xFF;
+        self.data.evs_condition.attack_ev = 0xFF;
+        self.data.evs_condition.defense_ev = 0xFF;
+        self.data.evs_condition.speed_ev = 0xFF;
+        self.data.evs_condition.sp_attack_ev = 0xFF;
+        self.data.evs_condition.sp_defense_ev = 0xFF;
+        self.data.evs_condition.coolness = 0xFF;
+        self.data.evs_condition.beauty = 0xFF;
+        self.data.evs_condition.cuteness = 0xFF;
+        self.data.evs_condition.smartness = 0xFF;
+        self.data.evs_condition.toughness = 0xFF;
+        self.data.evs_condition.feel = 0xFF;
+
+        self.data.miscellaneous.ivs_egg_abbility =
+            (self.data.miscellaneous.ivs_egg_abbility & 0xC000) | 0x3FFF;
+    }
 }
 
 impl From<&[u8]> for Pokemon {

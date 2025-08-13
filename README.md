@@ -11,10 +11,11 @@ Goals for this project:
 - [x] Write Pokemon data
 
 * Add a pokemon
-- Add a Lvl 99 Rayquaza to the party
+- [x] Add a Lvl 100 Rayquaza to the party
+- [ ] Make it generic
 
 * Teach forbidden moves
-- Add surf pikachu
+- [ ] Add surf pikachu
 
 * Enable access to event exclusive item
-- Eon ticket
+- [ ] Eon ticket

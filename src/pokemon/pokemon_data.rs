@@ -3,7 +3,7 @@ const SUBSTRUCTURE_ORDER: [&'static str; 24] = [
     "EGAM", "EGMA", "EAGM", "EAMG", "EMGA", "EMAG", "MGAE", "MGEA", "MAGE", "MAEG", "MEGA", "MEAG",
 ];
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct PokemonData {
     pub key: u32,
     pub order: &'static str,
@@ -212,7 +212,7 @@ impl PokemonData {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonGrowth {
     pub species: u16,
     pub item: u16,
@@ -222,7 +222,7 @@ pub struct PokemonGrowth {
     pub unused: u16,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonAttacks {
     pub move1: u16,
     pub move2: u16,
@@ -234,7 +234,7 @@ pub struct PokemonAttacks {
     pub pp4: u8,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonEvsCondition {
     pub hp_ev: u8,
     pub attack_ev: u8,
@@ -250,7 +250,7 @@ pub struct PokemonEvsCondition {
     pub feel: u8,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonMiscellaneous {
     pub pokerus_status: u8,
     pub met_location: u8,
