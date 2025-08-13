@@ -9,10 +9,12 @@ Goals for this project:
 - [x] Write Section
 - [x] Pokemon data encryption and decryption
 - [x] Write Pokemon data
+- [ ] Add support for save file distinction
 
 * Add a pokemon
 - [x] Add a Lvl 100 Rayquaza to the party
-- [ ] Make it generic
+- [x] Add moves and species
+- [x] Make it generic
 
 * Teach forbidden moves
 - [ ] Add surf pikachu

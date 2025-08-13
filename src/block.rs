@@ -3,7 +3,7 @@ use std::{
     io::{Seek, Write},
 };
 
-use crate::{section::Section, tools::print_bytes};
+use crate::section::Section;
 
 pub enum SaveType {
     A,
@@ -26,8 +26,6 @@ impl From<[u8; 57344]> for Block {
 
             assert!(section.id < 14, "Block: Section id must be within 0-13!");
             sections[section.id as usize] = section;
-
-            print_bytes(&section.data[0..16]);
 
             if section.id == 0 {
                 zero_index = idx;

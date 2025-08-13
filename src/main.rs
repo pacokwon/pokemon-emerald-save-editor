@@ -1,6 +1,10 @@
 use std::{fs::OpenOptions, io::Read};
 
-use emerald_save_editor::{block::Block, pokemon::PokemonList};
+use emerald_save_editor::{
+    block::Block,
+    moves::Move,
+    pokemon::{PokemonList, Species},
+};
 
 fn main() -> std::io::Result<()> {
     std::fs::copy(
@@ -18,11 +22,14 @@ fn main() -> std::io::Result<()> {
     let mut block = Block::from(buffer);
 
     let mut pokemon_list = PokemonList::from(&block.sections[1]);
-    println!("{:#?}", pokemon_list);
 
     let mut new_pokemon = pokemon_list[0].clone();
     new_pokemon.max_out();
-    new_pokemon.data.growth.species = 406;
+    new_pokemon.data.growth.species = Species::Rayquaza;
+    new_pokemon.data.attacks.move1 = Move::DragonDance;
+    new_pokemon.data.attacks.move2 = Move::AerialAce;
+    new_pokemon.data.attacks.move3 = Move::BrickBreak;
+    new_pokemon.data.attacks.move4 = Move::Outrage;
     pokemon_list.add(new_pokemon);
 
     block.sections[1].write_pokemon_list(&pokemon_list);

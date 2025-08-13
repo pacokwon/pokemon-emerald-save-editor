@@ -1,3 +1,5 @@
+use crate::{moves::Move, pokemon::Species};
+
 const SUBSTRUCTURE_ORDER: [&'static str; 24] = [
     "GAEM", "GAME", "GEAM", "GEMA", "GMAE", "GMEA", "AGEM", "AGME", "AEGM", "AEMG", "AMGE", "AMEG",
     "EGAM", "EGMA", "EAGM", "EAMG", "EMGA", "EMAG", "MGAE", "MGEA", "MAGE", "MAEG", "MEGA", "MEAG",
@@ -106,7 +108,9 @@ impl PokemonData {
 
             match c {
                 b'G' => {
-                    let species = u16::from_le_bytes(data[start..start + 2].try_into().unwrap());
+                    let species = Species::from(u16::from_le_bytes(
+                        data[start..start + 2].try_into().unwrap(),
+                    ));
                     let item = u16::from_le_bytes(data[start + 2..start + 4].try_into().unwrap());
                     let exp = u32::from_le_bytes(data[start + 4..start + 8].try_into().unwrap());
                     let pp_bonus = data[start + 8];
@@ -124,10 +128,18 @@ impl PokemonData {
                     };
                 }
                 b'A' => {
-                    let move1 = u16::from_le_bytes(data[start..start + 2].try_into().unwrap());
-                    let move2 = u16::from_le_bytes(data[start + 2..start + 4].try_into().unwrap());
-                    let move3 = u16::from_le_bytes(data[start + 4..start + 6].try_into().unwrap());
-                    let move4 = u16::from_le_bytes(data[start + 6..start + 8].try_into().unwrap());
+                    let move1 = Move::from(u16::from_le_bytes(
+                        data[start..start + 2].try_into().unwrap(),
+                    ));
+                    let move2 = Move::from(u16::from_le_bytes(
+                        data[start + 2..start + 4].try_into().unwrap(),
+                    ));
+                    let move3 = Move::from(u16::from_le_bytes(
+                        data[start + 4..start + 6].try_into().unwrap(),
+                    ));
+                    let move4 = Move::from(u16::from_le_bytes(
+                        data[start + 6..start + 8].try_into().unwrap(),
+                    ));
                     let pp1 = data[start + 8];
                     let pp2 = data[start + 9];
                     let pp3 = data[start + 10];
@@ -214,7 +226,7 @@ impl PokemonData {
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonGrowth {
-    pub species: u16,
+    pub species: Species,
     pub item: u16,
     pub exp: u32,
     pub pp_bonus: u8,
@@ -224,10 +236,10 @@ pub struct PokemonGrowth {
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonAttacks {
-    pub move1: u16,
-    pub move2: u16,
-    pub move3: u16,
-    pub move4: u16,
+    pub move1: Move,
+    pub move2: Move,
+    pub move3: Move,
+    pub move4: Move,
     pub pp1: u8,
     pub pp2: u8,
     pub pp3: u8,
