@@ -1,14 +1,9 @@
 use std::{
     fs::File,
-    io::{Seek, Write},
+    io::{Read, Seek, Write},
 };
 
 use crate::section::Section;
-
-pub enum SaveType {
-    A,
-    B,
-}
 
 #[derive(Debug)]
 pub struct Block {
@@ -40,6 +35,29 @@ impl From<[u8; 57344]> for Block {
 }
 
 impl Block {
+    // Despite the save index being stored in each section, only the value in the last section is used to determine the most recent save.
+    // If save A's value is bigger, then it is the most recent. Otherwise, save B is the most recent (this includes ties).
+    pub fn get_save_start_address(file: &mut File) -> std::io::Result<u64> {
+        let mut buf = [0u8; 4];
+
+        // each section is 4096 bytes.
+        let save_a_last_section = 0xdffc;
+        file.seek(std::io::SeekFrom::Start(save_a_last_section))?;
+        file.read_exact(&mut buf)?;
+        let save_index_a = u32::from_le_bytes(buf);
+
+        let save_b_last_section = 0x1bffc;
+        file.seek(std::io::SeekFrom::Start(save_b_last_section))?;
+        file.read_exact(&mut buf)?;
+        let save_index_b = u32::from_le_bytes(buf);
+
+        if save_index_a > save_index_b {
+            Ok(0x0000u64)
+        } else {
+            Ok(0xe000u64)
+        }
+    }
+
     pub fn write_section_to_file(
         &mut self,
         section_index: usize,

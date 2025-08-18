@@ -1,4 +1,7 @@
-use std::{fs::OpenOptions, io::Read};
+use std::{
+    fs::OpenOptions,
+    io::{Read, Seek},
+};
 
 use emerald_save_editor::{
     block::Block,
@@ -16,6 +19,8 @@ fn main() -> std::io::Result<()> {
         .write(true)
         .open("./saves/pokemon-emerald.sav")?;
 
+    let start_address = Block::get_save_start_address(&mut file)?;
+    file.seek(std::io::SeekFrom::Start(start_address))?;
     let mut buffer = [0u8; 57344];
     file.read_exact(&mut buffer)?;
 
