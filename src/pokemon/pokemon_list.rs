@@ -8,6 +8,7 @@ pub struct PokemonList(Vec<Pokemon>);
 impl PokemonList {
     pub fn add(&mut self, pokemon: Pokemon) {
         if self.0.len() == 6 {
+            eprintln!("Party is currently full!");
             return;
         }
 

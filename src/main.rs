@@ -9,6 +9,22 @@ use emerald_save_editor::{
     pokemon::{PokemonList, Species},
 };
 
+#[allow(dead_code)]
+fn add_rayquaza(block: &mut Block) {
+    let mut pokemon_list = PokemonList::from(&block.sections[1]);
+
+    let mut new_pokemon = pokemon_list[0].clone();
+    new_pokemon.max_out();
+    new_pokemon.data.growth.species = Species::Rayquaza;
+    new_pokemon.data.attacks.move1 = Move::DragonDance;
+    new_pokemon.data.attacks.move2 = Move::AerialAce;
+    new_pokemon.data.attacks.move3 = Move::BrickBreak;
+    new_pokemon.data.attacks.move4 = Move::Outrage;
+    pokemon_list.add(new_pokemon);
+
+    block.sections[1].write_pokemon_list(&pokemon_list);
+}
+
 fn main() -> std::io::Result<()> {
     std::fs::copy(
         "./saves/pokemon-emerald-original.sav",
@@ -25,19 +41,7 @@ fn main() -> std::io::Result<()> {
     file.read_exact(&mut buffer)?;
 
     let mut block = Block::from(buffer);
-
-    let mut pokemon_list = PokemonList::from(&block.sections[1]);
-
-    let mut new_pokemon = pokemon_list[0].clone();
-    new_pokemon.max_out();
-    new_pokemon.data.growth.species = Species::Rayquaza;
-    new_pokemon.data.attacks.move1 = Move::DragonDance;
-    new_pokemon.data.attacks.move2 = Move::AerialAce;
-    new_pokemon.data.attacks.move3 = Move::BrickBreak;
-    new_pokemon.data.attacks.move4 = Move::Outrage;
-    pokemon_list.add(new_pokemon);
-
-    block.sections[1].write_pokemon_list(&pokemon_list);
+    add_rayquaza(&mut block);
     block.write_section_to_file(1, &mut file)?;
 
     Ok(())
