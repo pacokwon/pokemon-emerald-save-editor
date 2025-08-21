@@ -58,6 +58,20 @@ impl Pokemon {
 
         self.data.growth.pp_bonus = 0xFF;
         self.data.growth.friendship = 0xFF;
+
+        self.data.attacks.pp1 = (self.data.attacks.move1.base_pp() as u32
+            * (10 + 2 * (self.data.growth.pp_bonus & 0xC0 >> 6) as u32)
+            / 10) as u8;
+        self.data.attacks.pp2 = (self.data.attacks.move2.base_pp() as u32
+            * (10 + 2 * (self.data.growth.pp_bonus & 0x30 >> 4) as u32)
+            / 10) as u8;
+        self.data.attacks.pp3 = (self.data.attacks.move3.base_pp() as u32
+            * (10 + 2 * (self.data.growth.pp_bonus & 0x0C >> 2) as u32)
+            / 10) as u8;
+        self.data.attacks.pp4 = (self.data.attacks.move4.base_pp() as u32
+            * (10 + 2 * (self.data.growth.pp_bonus & 0x03 >> 0) as u32)
+            / 10) as u8;
+
         self.data.evs_condition.hp_ev = 0xFF;
         self.data.evs_condition.attack_ev = 0xFF;
         self.data.evs_condition.defense_ev = 0xFF;

@@ -1,4 +1,4 @@
-use crate::{moves::Move, pokemon::Species};
+use crate::{moves::MoveId, pokemon::Species};
 
 const SUBSTRUCTURE_ORDER: [&'static str; 24] = [
     "GAEM", "GAME", "GEAM", "GEMA", "GMAE", "GMEA", "AGEM", "AGME", "AEGM", "AEMG", "AMGE", "AMEG",
@@ -128,16 +128,16 @@ impl PokemonData {
                     };
                 }
                 b'A' => {
-                    let move1 = Move::from(u16::from_le_bytes(
+                    let move1 = MoveId::from(u16::from_le_bytes(
                         data[start..start + 2].try_into().unwrap(),
                     ));
-                    let move2 = Move::from(u16::from_le_bytes(
+                    let move2 = MoveId::from(u16::from_le_bytes(
                         data[start + 2..start + 4].try_into().unwrap(),
                     ));
-                    let move3 = Move::from(u16::from_le_bytes(
+                    let move3 = MoveId::from(u16::from_le_bytes(
                         data[start + 4..start + 6].try_into().unwrap(),
                     ));
-                    let move4 = Move::from(u16::from_le_bytes(
+                    let move4 = MoveId::from(u16::from_le_bytes(
                         data[start + 6..start + 8].try_into().unwrap(),
                     ));
                     let pp1 = data[start + 8];
@@ -236,10 +236,10 @@ pub struct PokemonGrowth {
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct PokemonAttacks {
-    pub move1: Move,
-    pub move2: Move,
-    pub move3: Move,
-    pub move4: Move,
+    pub move1: MoveId,
+    pub move2: MoveId,
+    pub move3: MoveId,
+    pub move4: MoveId,
     pub pp1: u8,
     pub pp2: u8,
     pub pp3: u8,

@@ -15,6 +15,7 @@ Goals for this project:
 - [x] Add a Lvl 100 Rayquaza to the party
 - [x] Add moves and species
 - [x] Make it generic
+- [x] PP Calculation
 
 * Teach forbidden moves
 - [ ] Add surf pikachu

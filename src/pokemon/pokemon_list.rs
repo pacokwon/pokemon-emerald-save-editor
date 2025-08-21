@@ -3,7 +3,7 @@ use std::ops::{Index, IndexMut};
 use crate::{pokemon::Pokemon, section::Section};
 
 #[derive(Debug)]
-pub struct PokemonList(Vec<Pokemon>);
+pub struct PokemonList(pub Vec<Pokemon>);
 
 impl PokemonList {
     pub fn add(&mut self, pokemon: Pokemon) {
