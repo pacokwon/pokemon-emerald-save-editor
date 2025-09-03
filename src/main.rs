@@ -48,23 +48,6 @@ fn add_surf_pikachu(block: &mut Block) {
 }
 
 fn main() -> std::io::Result<()> {
-    std::fs::copy(
-        "./saves/pokemon-emerald-original.sav",
-        "./saves/pokemon-emerald.sav",
-    )?;
-    let mut file = OpenOptions::new()
-        .read(true)
-        .write(true)
-        .open("./saves/pokemon-emerald.sav")?;
-
-    let start_address = Block::get_save_start_address(&mut file)?;
-    file.seek(std::io::SeekFrom::Start(start_address))?;
-    let mut buffer = [0u8; 57344];
-    file.read_exact(&mut buffer)?;
-
-    let mut block = Block::from(buffer);
-    add_surf_pikachu(&mut block);
-    block.write_section_to_file(1, &mut file)?;
 
     Ok(())
 }

@@ -1,9 +1,14 @@
 use std::{
-    fs::File,
+    fs::{File, OpenOptions},
     io::{Read, Seek, Write},
 };
 
 use crate::section::Section;
+
+pub enum BlockOpenOption {
+    Copy(String),
+    Overwrite,
+}
 
 #[derive(Debug)]
 pub struct Block {
@@ -35,6 +40,21 @@ impl From<[u8; 57344]> for Block {
 }
 
 impl Block {
+    pub fn open_from_save_file(filename: &str, opt: BlockOpenOption) -> std::io::Result<Self> {
+        if let BlockOpenOption::Copy(copy_path) = opt {
+            std::fs::copy(filename, &copy_path)?;
+        }
+
+        let mut file = OpenOptions::new().read(true).write(true).open(filename)?;
+
+        let start_address = Block::get_save_start_address(&mut file)?;
+        file.seek(std::io::SeekFrom::Start(start_address))?;
+        let mut buffer = [0u8; 57344];
+        file.read_exact(&mut buffer)?;
+
+        Ok(Block::from(buffer))
+    }
+
     // Despite the save index being stored in each section, only the value in the last section is used to determine the most recent save.
     // If save A's value is bigger, then it is the most recent. Otherwise, save B is the most recent (this includes ties).
     pub fn get_save_start_address(file: &mut File) -> std::io::Result<u64> {
